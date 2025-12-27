@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll() // allow register & login
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/categories/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
 
                         .anyRequest().authenticated()           // protect other endpoints
                 )
