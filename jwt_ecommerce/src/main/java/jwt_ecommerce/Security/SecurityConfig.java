@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // allow register & login
                         .requestMatchers("/products/**").permitAll()
+                        .requestMatchers("/categories/**").permitAll()
+
                         .anyRequest().authenticated()           // protect other endpoints
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

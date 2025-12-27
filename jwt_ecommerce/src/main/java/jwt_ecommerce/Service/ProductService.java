@@ -1,7 +1,10 @@
 package jwt_ecommerce.Service;
 
+import jwt_ecommerce.Entity.Category;
 import jwt_ecommerce.Entity.Product;
+import jwt_ecommerce.Repository.CategoryRepository;
 import jwt_ecommerce.Repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +18,20 @@ public class ProductService {
         this.repo = repo;
     }
 
-    public Product addProduct(Product product) {
+    @Autowired
+    private CategoryRepository categoryRepo;
+
+//    public Product addProduct(Product product) {
+//        return repo.save(product);
+//    }
+
+    public Product saveProduct(Product product) {
+        Long catId = product.getCategory().getId();
+
+        Category category = categoryRepo.findById(catId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        product.setCategory(category);
         return repo.save(product);
     }
 

@@ -24,7 +24,9 @@ public class Product {
 
     private int quantity;
 
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     private String brand;
 }
