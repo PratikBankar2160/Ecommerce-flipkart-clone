@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/categories/**").permitAll()
                         .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/orders/**").permitAll()
 
                         .anyRequest().authenticated()           // protect other endpoints
                 )
