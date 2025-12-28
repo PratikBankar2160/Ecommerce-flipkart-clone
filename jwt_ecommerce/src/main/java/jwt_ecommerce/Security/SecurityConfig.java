@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/categories/**").permitAll()
                         .requestMatchers("/cart/**").permitAll()
                         .requestMatchers("/orders/**").permitAll()
+                        .requestMatchers("/payments/**").permitAll()
 
                         .anyRequest().authenticated()           // protect other endpoints
                 )
