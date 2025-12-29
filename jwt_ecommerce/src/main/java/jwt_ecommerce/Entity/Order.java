@@ -19,9 +19,15 @@ public class Order {
 
     private Double totalAmount;
 
-    private String status; // PLACED, SHIPPED, DELIVERED
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status; // PLACED, SHIPPED, DELIVERED
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderItem> items;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

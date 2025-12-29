@@ -1,7 +1,6 @@
 package jwt_ecommerce.Service;
 
-import jwt_ecommerce.Entity.Order;
-import jwt_ecommerce.Entity.Payment;
+import jwt_ecommerce.Entity.*;
 import jwt_ecommerce.Repository.OrderRepository;
 import jwt_ecommerce.Repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,11 @@ public class PaymentService {
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setAmount(order.getTotalAmount());
-        payment.setPaymentMethod("COD");
-        payment.setPaymentStatus("SUCCESS");
+        payment.setPaymentMethod(PaymentMethod.COD);
+        payment.setPaymentStatus(PaymentStatus.SUCCESS);
 
         // update order status
-        order.setStatus("PAID");
+        order.setStatus(OrderStatus.PAID);
         orderRepo.save(order);
 
         return paymentRepo.save(payment);

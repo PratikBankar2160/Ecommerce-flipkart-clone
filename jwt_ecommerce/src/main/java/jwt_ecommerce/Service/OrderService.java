@@ -1,11 +1,9 @@
 package jwt_ecommerce.Service;
 
-import jwt_ecommerce.Entity.Cart;
-import jwt_ecommerce.Entity.CartItem;
-import jwt_ecommerce.Entity.Order;
-import jwt_ecommerce.Entity.OrderItem;
+import jwt_ecommerce.Entity.*;
 import jwt_ecommerce.Repository.CartRepository;
 import jwt_ecommerce.Repository.OrderRepository;
+import jwt_ecommerce.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +19,20 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepo;
 
-    public Order checkout(Long cartId) {
+    @Autowired
+    private UserRepository userRepo;
+
+    public Order checkout(Long cartId,Long userId) {
 
         Cart cart = cartRepo.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Order order = new Order();
-        order.setStatus("PLACED");
+        order.setUser(user);
+        order.setStatus(OrderStatus.PLACED);
 
         double total = 0;
 
@@ -51,4 +56,33 @@ public class OrderService {
 
         return orderRepo.save(order);
     }
+
+    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(status);
+        return orderRepo.save(order);
+    }
+
+    public List<Order> getOrdersByUser(Long userId) {
+        return orderRepo.findByUserId(userId);
+    }
+
+    public Order updateStatus(Long orderId, OrderStatus status) {
+
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(status);
+        return orderRepo.save(order);
+    }
+
+    // ADMIN – get all orders
+    public List<Order> getAllOrders() {
+        return orderRepo.findAll();
+    }
+
+
 }

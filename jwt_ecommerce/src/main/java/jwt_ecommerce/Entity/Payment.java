@@ -14,8 +14,12 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String paymentMethod; // COD, RAZORPAY
-    private String paymentStatus; // PENDING, SUCCESS, FAILED
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;  // COD, RAZORPAY
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;  // PENDING, SUCCESS, FAILED
+
     private double amount;
 
     @OneToOne
