@@ -13,7 +13,7 @@ const CategoryNavbar = ({ onCategorySelect }) => {
     }, []);
 
     return (
-        <div className="category-navbar">
+        <div className="category-navbar ">
             {categories.map((cat) => (
                 <div
                     key={cat.id}

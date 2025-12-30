@@ -1,0 +1,29 @@
+.brand-sidebar {
+  width: 280px; /* fixed width */
+  background-color: #fff;
+  border-radius: 0 0 10px 10px; /* top square, bottom rounded */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 16px;
+}
+
+
+.brand-sidebar {
+  position: sticky;
+  top: 80px; /* height of navbar */
+}
+
+
+
+.brand-item {
+  cursor: pointer;
+  padding: 8px 12px;
+  color: #333;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.brand-item:hover {
+  background-color: #f1f3f5;
+  color: #0d6efd;
+  transform: translateX(4px);
+}

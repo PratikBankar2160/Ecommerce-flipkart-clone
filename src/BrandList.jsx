@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./BrandList.css";
 import axios from "axios";
 
 const BrandList = ({ categoryId }) => {
@@ -10,24 +11,32 @@ const BrandList = ({ categoryId }) => {
         axios.get(`http://localhost:8080/products/brands/${categoryId}`)
             .then((res) => {
                 setBrands(res.data)
-                console.log(res.data);
             })
-
-
             .catch(() => alert("Error fetching brands"));
     }, [categoryId]);
 
     return (
-        <div className="container mt-3">
-            <h5>Brands</h5>
-            <div className="d-flex gap-3 flex-wrap">
-                {brands.map(brand => (
-                    <span key={brand.id} className="badge bg-secondary">
-                        {brand}
-                    </span>
-                ))}
+        <div>
+        <div className="col-md-3">
+            <div className="brand-sidebar p-3">
+                <h5 className="mb-3 fw-bold border-bottom pb-2">
+                    Brands
+                </h5>
+
+                <ul className="nav flex-column brand-list">
+                    {brands.map((brand, index) => (
+                        <li className="nav-item" key={index}>
+                            <span className="nav-link brand-item">
+                                {brand}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
+        </div>
+
+
     );
 };
 
