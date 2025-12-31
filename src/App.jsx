@@ -7,36 +7,37 @@ import Products from './Products';
 import CategoryNavbar from './CategoryNavbar';
 import BrandList from './BrandList';
 import ProductList from './ProductList';
+import AddToCart from './AddToCart';
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
+
   return (
     <div>
       <Navbar />
+
       <CategoryNavbar onCategorySelect={setSelectedCategory} />
+
+      {/* ✅ conditional rendering */}
+      {selectedCategory && (
         <BrandList categoryId={selectedCategory} />
+      )}
 
       <Routes>
-        {/* Home */}
-        {/* <Route
-          path="/"
-          element={
-            <>
-            </>
-          }
-        /> */}
-
-        {/* Products */}
+        {/* <Route path="/" element={<Products />} /> */}
+        <Route path="/" element={<h2>Home Page</h2>} />
         <Route path="/products" element={<Products />} />
         <Route path="/brandProducts" element={<ProductList />} />
-
-        {/* Login */}
         <Route path="/login" element={<h2>Login Page</h2>} />
         <Route path="/cart" element={<h2>Cart Page</h2>} />
+
+          {/* <Route path="/brands/:categoryId" element={<AddToCart />} /> */}
+          <Route path="/brandProducts" element={<ProductList />} />
+        
       </Routes>
     </div>
   );
 }
+
 
 export default App;

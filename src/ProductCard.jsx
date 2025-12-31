@@ -1,12 +1,47 @@
 import React from "react";
+import axios from "axios";
 
 const ProductCard = ({ product }) => {
+
+
+  // const addToCart = (productId) => {
+  //   axios.post("http://localhost:8080/cart/add", {
+  //     productId: productId,
+  //     quantity: 1
+  //   })
+  //   .then(() => {
+  //     alert("Product added to cart");
+  //   })
+  //   .catch(() => {
+  //     alert("Failed to add product");
+  //   });
+  // };
+
+  const addToCart = () => {
+
+    let cartId = 1;
+    let productId = product.id;
+
+    axios.post("http://localhost:8080/cart/add", {
+      cartId,
+      productId,
+      quantity: 1
+    })
+      .then(() => {
+        alert("Product added to cart");
+      })
+      .catch(() => {
+        alert("Failed to add product");
+      });
+
+
+  }
   const discount =
-  product.oldPrice
-    ? Math.round(
+    product.oldPrice
+      ? Math.round(
         ((product.oldPrice - product.price) / product.oldPrice) * 100
       )
-    : 0;
+      : 0;
 
   return (
     <div className="product-card d-flex p-3 mb-3">
@@ -32,13 +67,15 @@ const ProductCard = ({ product }) => {
 
         <ul className="product-specs">
           <li>{product.description}</li>
-          {/* <li>6.1 inch Super Retina XDR Display</li>
-          <li>48MP + 12MP | 12MP Front Camera</li>
-          <li>A18 Chip, 6 Core Processor</li>
-          <li>1 Year Warranty</li> */}
         </ul>
 
-        <button className="btn btn-primary mt-auto"> Add to Cart </button>
+        <button
+          className="btn btn-primary mt-auto"
+          onClick={() => addToCart(product.id)}
+        >
+          Add to Cart
+        </button>
+
       </div>
 
       {/* Price */}
