@@ -3,27 +3,18 @@ import axios from "axios";
 
 const ProductCard = ({ product }) => {
 
-
-  // const addToCart = (productId) => {
-  //   axios.post("http://localhost:8080/cart/add", {
-  //     productId: productId,
-  //     quantity: 1
-  //   })
-  //   .then(() => {
-  //     alert("Product added to cart");
-  //   })
-  //   .catch(() => {
-  //     alert("Failed to add product");
-  //   });
-  // };
-
   const addToCart = () => {
 
-    let cartId = 1;
+    let userId = 3;
+    localStorage.setItem("userId", JSON.stringify(userId));
+
+    
+
+
     let productId = product.id;
 
     axios.post("http://localhost:8080/cart/add", {
-      cartId,
+      userId,
       productId,
       quantity: 1
     })

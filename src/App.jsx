@@ -7,7 +7,7 @@ import Products from './Products';
 import CategoryNavbar from './CategoryNavbar';
 import BrandList from './BrandList';
 import ProductList from './ProductList';
-import AddToCart from './AddToCart';
+import CartPage from './CartPage';
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -29,7 +29,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/brandProducts" element={<ProductList />} />
         <Route path="/login" element={<h2>Login Page</h2>} />
-        <Route path="/cart" element={<h2>Cart Page</h2>} />
+        <Route path="/cart" element={<CartPage />} />
 
           {/* <Route path="/brands/:categoryId" element={<AddToCart />} /> */}
           <Route path="/brandProducts" element={<ProductList />} />
