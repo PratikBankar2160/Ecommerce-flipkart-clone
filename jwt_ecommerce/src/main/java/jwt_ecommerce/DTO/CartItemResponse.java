@@ -15,4 +15,7 @@ public class CartItemResponse {
     private String productName;
 
     private double subTotal; // price * quantity
+
+    private Double oldPrice;
+
 }

@@ -53,4 +53,12 @@ public class CartController {
         return "Item removed from cart";
     }
 
+    @PutMapping("/quantity/{itemId}")
+    public CartResponse updateQty(
+            @PathVariable Long itemId,
+            @RequestParam int change,
+            @RequestParam Long userId) {
+
+        return cartService.updateQuantity(itemId, change, userId);
+    }
 }

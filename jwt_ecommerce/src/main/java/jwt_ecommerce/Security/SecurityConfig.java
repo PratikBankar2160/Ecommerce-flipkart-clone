@@ -29,9 +29,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll() // allow register & login
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/categories/**").permitAll()
-                        .requestMatchers("/cart/**").permitAll()
-//                        .requestMatchers("/cart/add**").permitAll()
-                        .requestMatchers("/orders/**").permitAll()
+                                .requestMatchers("/cart/**").permitAll()
+                                .requestMatchers("/cart/quantity/**").permitAll()
+
+                                .requestMatchers("/orders/**").permitAll()
                         .requestMatchers("/products/brands/**").permitAll()
 //                        .requestMatchers("/orders/admin/**").hasRole("ADMIN")
                         .requestMatchers("/payments/**").permitAll()

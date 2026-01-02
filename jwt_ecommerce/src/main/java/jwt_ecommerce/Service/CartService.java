@@ -107,6 +107,8 @@ public class CartService {
             dto.setProductName(item.getProduct().getName());
             dto.setQuantity(item.getQuantity());
             dto.setPrice(item.getPrice());
+            dto.setOldPrice(item.getProduct().getOldPrice());
+
 
             double subTotal = item.getPrice() * item.getQuantity();
             dto.setSubTotal(subTotal);
@@ -143,6 +145,24 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
         cartItemRepo.delete(item);
+    }
+
+    //Increases or decrease quantity
+    public CartResponse updateQuantity(Long itemId, int change, Long userId) {
+
+        CartItem item = cartItemRepo.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        int newQty = item.getQuantity() + change;
+
+        if (newQty <= 0) {
+            cartItemRepo.delete(item);
+        } else {
+            item.setQuantity(newQty);
+            cartItemRepo.save(item);
+        }
+
+        return viewCart(userId);
     }
 
 
