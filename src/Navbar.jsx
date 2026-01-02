@@ -5,10 +5,12 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <div className="container">
-        
-        <Link className="navbar-brand fw-bold" to="/">
+
+        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/">
+          <i className="bi bi-bag-fill me-2 fs-4"></i> {/* Store bag icon */}
           ShopEase
         </Link>
+
 
         <button
           className="navbar-toggler"
@@ -31,8 +33,12 @@ export default function Navbar() {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/cart">Cart</Link>
+              <Link className="nav-link" to="/cart" title="Cart">
+                <i className="bi bi-cart-fill fs-5 text-primary"></i>
+              </Link>
             </li>
+
+
 
             <li className="nav-item">
               <Link className="nav-link" to="/login">Login</Link>
