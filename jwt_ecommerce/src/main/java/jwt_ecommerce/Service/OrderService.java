@@ -1,6 +1,8 @@
 package jwt_ecommerce.Service;
 
+import jakarta.transaction.Transactional;
 import jwt_ecommerce.Entity.*;
+import jwt_ecommerce.Repository.CartItemRepository;
 import jwt_ecommerce.Repository.CartRepository;
 import jwt_ecommerce.Repository.OrderRepository;
 import jwt_ecommerce.Repository.UserRepository;
@@ -22,7 +24,11 @@ public class OrderService {
     @Autowired
     private UserRepository userRepo;
 
-    public Order checkout(Long cartId,Long userId) {
+    @Autowired
+    private CartItemRepository cartItemRepo;
+
+    @Transactional
+    public Order checkout(Long cartId, Long userId) {
 
         Cart cart = cartRepo.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
@@ -30,20 +36,27 @@ public class OrderService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (!cart.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Cart does not belong to user");
+        }
+
+        if (cart.getItems().isEmpty()) {
+            throw new RuntimeException("Cart is empty");
+        }
+
         Order order = new Order();
         order.setUser(user);
         order.setStatus(OrderStatus.PLACED);
 
         double total = 0;
-
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (CartItem cartItem : cart.getItems()) {
             OrderItem item = new OrderItem();
+            item.setOrder(order);
             item.setProduct(cartItem.getProduct());
             item.setQuantity(cartItem.getQuantity());
             item.setPrice(cartItem.getPrice());
-            item.setOrder(order);
 
             total += cartItem.getQuantity() * cartItem.getPrice();
             orderItems.add(item);
@@ -52,10 +65,17 @@ public class OrderService {
         order.setItems(orderItems);
         order.setTotalAmount(total);
 
-        cart.getItems().clear(); // empty cart
+        Order savedOrder = orderRepo.save(order);
 
-        return orderRepo.save(order);
+        // ✅ THIS IS ENOUGH
+        cart.getItems().clear();
+        cartRepo.save(cart);
+
+        return savedOrder;
     }
+
+
+
 
     public Order updateOrderStatus(Long orderId, OrderStatus status) {
 
