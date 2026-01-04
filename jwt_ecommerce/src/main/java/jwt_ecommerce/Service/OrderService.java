@@ -77,14 +77,14 @@ public class OrderService {
 
 
 
-    public Order updateOrderStatus(Long orderId, OrderStatus status) {
-
-        Order order = orderRepo.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
-
-        order.setStatus(status);
-        return orderRepo.save(order);
-    }
+//    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+//
+//        Order order = orderRepo.findById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Order not found"));
+//
+//        order.setStatus(status);
+//        return orderRepo.save(order);
+//    }
 
     public List<Order> getOrdersByUser(Long userId) {
         return orderRepo.findByUserId(userId);
@@ -97,11 +97,6 @@ public class OrderService {
 
         order.setStatus(status);
         return orderRepo.save(order);
-    }
-
-    // ADMIN – get all orders
-    public List<Order> getAllOrders() {
-        return orderRepo.findAll();
     }
 
     //Cancel order
@@ -122,6 +117,28 @@ public class OrderService {
 
         order.setStatus(OrderStatus.CANCELLED);
         orderRepo.save(order);
+    }
+
+    //------------------------------------------- ADMIN SERVICE ---------------------------------------------------
+
+    // ADMIN – get all orders
+    public List<Order> getAllOrders() {
+        return orderRepo.findAll();
+    }
+
+    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // ❌ Prevent update if already cancelled or delivered
+        if (order.getStatus() == OrderStatus.CANCELLED ||
+                order.getStatus() == OrderStatus.DELIVERED) {
+            throw new RuntimeException("Order status cannot be updated");
+        }
+
+        order.setStatus(status);
+        return orderRepo.save(order);
     }
 
 }

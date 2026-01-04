@@ -22,13 +22,13 @@ public class OrderController {
         return orderService.checkout(cartId, userId);
     }
 
-    @PutMapping("/status/{orderId}")
-    public Order updateStatus(
-            @PathVariable Long orderId,
-            @RequestParam OrderStatus status) {
-
-        return orderService.updateOrderStatus(orderId, status);
-    }
+//    @PutMapping("/status/{orderId}")
+//    public Order updateStatus(
+//            @PathVariable Long orderId,
+//            @RequestParam OrderStatus status) {
+//
+//        return orderService.updateOrderStatus(orderId, status);
+//    }
 
     @GetMapping("/user/{userId}")
     public List<Order> getUserOrders(@PathVariable Long userId) {
@@ -44,9 +44,18 @@ public class OrderController {
     }
 
 
-    // ADMIN
+    //------------------------------------------- ADMIN CONTROLLER ---------------------------------------------------
     @GetMapping("/admin")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Order> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestParam OrderStatus status) {
+
+        Order updatedOrder = orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok(updatedOrder);
     }
 }
