@@ -1,0 +1,149 @@
+/* =========================
+   PAGE CONTAINER
+========================= */
+.container {
+    max-width: 950px;
+}
+
+/* =========================
+   HEADING
+========================= */
+.container h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+.order-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    border: 1.5px solid #dee2e6;
+    background-color: #f8f9fa;
+    color: #495057;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.filter-btn.active {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+    box-shadow: 0 6px 22px rgba(13, 110, 253, 0.4);
+}
+
+/* =========================
+   ORDER CARD
+========================= */
+.admin-order-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid #0d6efd;
+    transition: all 0.3s ease;
+}
+
+.admin-order-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   ORDER HEADER
+========================= */
+.admin-order-card h6 {
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* =========================
+   STATUS DROPDOWN
+========================= */
+.status-dropdown {
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1.5px solid #ced4da;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.status-dropdown:hover {
+    background-color: #e9ecef;
+}
+
+.status-dropdown:disabled {
+    background-color: #dee2e6;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* =========================
+   USER INFO
+========================= */
+.admin-order-card p {
+    font-size: 0.85rem;
+}
+
+/* =========================
+   ORDER ITEMS
+========================= */
+.admin-order-card .small {
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+/* =========================
+   TOTAL
+========================= */
+.admin-order-card .fw-semibold {
+    border-top: 1px dashed #dee2e6;
+    padding-top: 10px;
+    font-size: 0.95rem;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.text-muted {
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 576px) {
+    .admin-order-card {
+        padding: 15px;
+    }
+
+    .filter-btn {
+        font-size: 0.75rem;
+        padding: 5px 14px;
+    }
+
+    .status-dropdown {
+        font-size: 0.75rem;
+    }
+}
