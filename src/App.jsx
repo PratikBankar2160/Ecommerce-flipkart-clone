@@ -14,6 +14,8 @@ import CartPage from './CartPage';
 import MyOrders from './MyOrders';
 import AdminOrders from './Admin/AdminOrders';
 import AddProduct from './Admin/AddProduct';
+import SellerHome from './Admin/SellerHome';
+import Products from './Products';
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -45,6 +47,9 @@ function App() {
 
         <Route path="admin/orders" element={<AdminOrders />} />
         <Route path="admin/addProduct" element={<AddProduct />} />
+        <Route path="admin/seller" element={<SellerHome />} />
+        <Route path="admin/products" element={<Products />} />
+
       </Routes>
     </div>
   );
