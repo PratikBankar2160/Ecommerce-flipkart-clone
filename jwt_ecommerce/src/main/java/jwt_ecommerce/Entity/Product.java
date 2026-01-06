@@ -29,4 +29,6 @@ public class Product {
     private Category category;
 
     private String brand;
+
+    private String imageUrl;
 }

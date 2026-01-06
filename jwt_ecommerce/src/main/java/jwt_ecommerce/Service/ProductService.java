@@ -7,7 +7,15 @@ import jwt_ecommerce.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductService {
@@ -25,13 +33,53 @@ public class ProductService {
 //        return repo.save(product);
 //    }
 
-    public Product saveProduct(Product product) {
-        Long catId = product.getCategory().getId();
+//    public Product saveProduct(Product product) {
+//        Long catId = product.getCategory().getId();
+//
+//        Category category = categoryRepo.findById(catId)
+//                .orElseThrow(() -> new RuntimeException("Category not found"));
+//
+//        product.setCategory(category);
+//        return repo.save(product);
+//    }
 
-        Category category = categoryRepo.findById(catId)
+    public Product saveProduct(
+            String name,
+            String description,
+            double price,
+            Double oldPrice,
+            int quantity,
+            String brand,
+            Long categoryId,
+            MultipartFile image
+    ) throws IOException {
+
+        // 🔹 fetch category
+        Category category = categoryRepo.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
+        // 🔹 save image locally
+        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+        Path uploadPath = Paths.get("uploads");
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // 🔹 save product
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setOldPrice(oldPrice);
+        product.setQuantity(quantity);
+        product.setBrand(brand);
         product.setCategory(category);
+        product.setImageUrl("/uploads/" + fileName);
+
         return repo.save(product);
     }
 
