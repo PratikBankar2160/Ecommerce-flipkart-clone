@@ -33,30 +33,7 @@ public class CartService {
     @Autowired
     private UserRepository userRepo;
 
-//    public CartItemResponse addToCart(AddToCartRequest request) {
-//
-//        Cart cart = cartRepo.findById(request.getCartId()).orElseThrow();
-//        Product product = productRepo.findById(request.getProductId()).orElseThrow();
-//
-//        CartItem item = new CartItem();
-//        item.setCart(cart);
-//        item.setProduct(product);
-//        item.setQuantity(request.getQuantity());
-//        item.setPrice(product.getPrice());
-//
-//        CartItem saved = cartItemRepo.save(item);
-//
-//        CartItemResponse res = new CartItemResponse();
 
-    /// /        res.setId(saved.getId());
-//        res.setItemId(saved.getId());
-//        res.setQuantity(saved.getQuantity());
-//        res.setPrice(saved.getPrice());
-//        res.setProductId(product.getId());
-//        res.setProductName(product.getName());
-//
-//        return res;
-//    }
     public CartItemResponse addToCart(AddToCartRequest request) {
 
         User user = userRepo.findById(request.getUserId())
@@ -105,6 +82,7 @@ public class CartService {
             dto.setItemId(item.getId());
             dto.setProductId(item.getProduct().getId());
             dto.setProductName(item.getProduct().getName());
+            dto.setImageUrl(item.getProduct().getImageUrl());
             dto.setQuantity(item.getQuantity());
             dto.setPrice(item.getPrice());
             dto.setOldPrice(item.getProduct().getOldPrice());
