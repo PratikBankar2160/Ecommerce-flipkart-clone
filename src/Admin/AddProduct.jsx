@@ -4,6 +4,8 @@ import "./AddProduct.css";
 
 const AddProduct = () => {
     const [categories, setCategories] = useState([]);
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState(null);
 
     const [product, setProduct] = useState({
         name: "",
@@ -17,8 +19,7 @@ const AddProduct = () => {
 
     // 🔄 Load categories
     useEffect(() => {
-        axios
-            .get("http://localhost:8080/categories")
+        axios.get("http://localhost:8080/categories")
             .then(res => setCategories(res.data))
             .catch(() => alert("Failed to load categories"));
     }, []);
@@ -28,25 +29,33 @@ const AddProduct = () => {
         setProduct({ ...product, [e.target.name]: e.target.value });
     };
 
-    // 🚀 Submit (JSON request)
+    // 🖼 Image handler
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+        setPreview(URL.createObjectURL(file));
+    };
+
+    // 🚀 Submit
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const payload = {
-            name: product.name,
-            description: product.description,
-            price: Number(product.price),
-            oldPrice: product.oldPrice ? Number(product.oldPrice) : null,
-            quantity: Number(product.quantity),
-            brand: product.brand,
-            category: {
-                id: Number(product.categoryId)
-            }
-        };
+        if (!image) {
+            alert("Please select an image");
+            return;
+        }
 
+        const formData = new FormData();
+        formData.append("name", product.name);
+        formData.append("description", product.description);
+        formData.append("price", product.price);
+        formData.append("oldPrice", product.oldPrice);
+        formData.append("quantity", product.quantity);
+        formData.append("brand", product.brand);
+        formData.append("categoryId", product.categoryId);
+        formData.append("image", image);
 
-        axios
-            .post("http://localhost:8080/products", payload)
+        axios.post("http://localhost:8080/products", formData)
             .then(() => {
                 alert("Product added successfully");
 
@@ -59,10 +68,12 @@ const AddProduct = () => {
                     brand: "",
                     categoryId: ""
                 });
+                setImage(null);
+                setPreview(null);
             })
             .catch(err => {
                 console.error(err);
-                alert(err.response?.data || "Failed to add product");
+                alert("Failed to add product");
             });
     };
 
@@ -141,6 +152,27 @@ const AddProduct = () => {
                         </option>
                     ))}
                 </select>
+
+                {/* Image Upload */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    required
+                />
+
+                {/* Image Preview */}
+                {preview && (
+                    <img
+                        src={preview}
+                        alt="Preview"
+                        style={{
+                            width: "100px",
+                            marginTop: "10px",
+                            borderRadius: "4px"
+                        }}
+                    />
+                )}
 
                 <button type="submit">Add Product</button>
             </form>

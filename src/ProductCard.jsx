@@ -43,11 +43,13 @@ const ProductCard = ({ product }) => {
 
       {/* Image */}
       <div className="product-img">
-        <img
-          src={product.image || "https://via.placeholder.com/200"}
-          alt={product.name}
-        />
-      </div>
+  <img
+    src={product.image || "/products/doormat.webp"}
+    alt={product.name}
+    className="img-fluid"
+  />
+</div>
+
 
       {/* Details */}
       <div className="product-details flex-grow-1 ms-4">
