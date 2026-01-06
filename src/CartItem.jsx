@@ -1,30 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./CartItem.css"
 
 const CartItem = ({ item, setCart }) => {
   const userId = JSON.parse(localStorage.getItem("userId"));
   const [loading, setLoading] = useState(false);
 
-
   // Update quantity
-const updateQty = (itemId, change) => {
-  if (loading) return; // prevent double click
+  const updateQty = (itemId, change) => {
+    if (loading) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  axios
-    .put(`http://localhost:8080/cart/quantity/${itemId}`, null, {
-      params: { change, userId },
-    })
-    .then((res) => {
-      setCart(res.data);
-    })
-    .catch(() => alert("Failed to update quantity"))
-    .finally(() => setLoading(false));
-};
+    axios
+      .put(`http://localhost:8080/cart/quantity/${itemId}`, null, {
+        params: { change, userId },
+      })
+      .then((res) => setCart(res.data))
+      .catch(() => alert("Failed to update quantity"))
+      .finally(() => setLoading(false));
+  };
 
-
-  // Remove item from cart
+  // Remove item
   const removeItem = (itemId) => {
     axios
       .delete(`http://localhost:8080/cart/remove/${itemId}`, {
@@ -42,21 +39,28 @@ const updateQty = (itemId, change) => {
       .catch(() => alert("Failed to remove item"));
   };
 
+
   return (
     <div className="card mb-3 p-3 shadow-sm rounded-3">
       <div className="row align-items-center">
 
         {/* Product Info */}
-        <div className="col-md-6 d-flex align-items-center">
+        <div className="col-md-6 d-flex align-items-center gap-3">
+
+
+          {/* Product Image */}
           <img
-            src={item.imageUrl || "https://via.placeholder.com/60"}
+            src={item.imageUrl}
             alt={item.productName}
-            className="me-3 rounded"
-            style={{ width: "60px", height: "60px", objectFit: "cover" }}
+            className="cart-product-img"
           />
+
+
           <div>
             <h6 className="mb-1">{item.productName}</h6>
-            <p className="text-muted small mb-0">Product ID: {item.productId}</p>
+            <p className="text-muted small mb-0">
+              Product ID: {item.productId}
+            </p>
           </div>
         </div>
 
@@ -70,7 +74,9 @@ const updateQty = (itemId, change) => {
             >
               <i className="bi bi-dash"></i>
             </button>
+
             <span className="mx-2 fw-bold">{item.quantity}</span>
+
             <button
               className="btn btn-outline-secondary btn-sm"
               onClick={() => updateQty(item.itemId, 1)}
@@ -80,12 +86,11 @@ const updateQty = (itemId, change) => {
           </div>
         </div>
 
-        {/* Price + Remove Button */}
+        {/* Price + Remove */}
         <div className="col-md-4 text-end d-flex flex-column align-items-end">
           <h6 className="mb-2">₹{item.subTotal}</h6>
           <button
-            className="btn btn-sm btn-outline-danger px-2 py-1"
-            title="Remove item"
+            className="btn btn-sm btn-outline-danger"
             onClick={() => removeItem(item.itemId)}
           >
             <i className="bi bi-trash-fill"></i>
