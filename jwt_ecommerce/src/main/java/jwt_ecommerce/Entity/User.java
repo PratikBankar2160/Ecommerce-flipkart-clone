@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -15,10 +16,11 @@ public class User {
 
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
-    private String role; // USER, ADMIN
+    // USER or SELLER
+    private String role;
 }

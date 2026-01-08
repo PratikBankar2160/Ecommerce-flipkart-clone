@@ -9,6 +9,7 @@ import jwt_ecommerce.Repository.UserRepository;
 import jwt_ecommerce.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,33 +24,37 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getRequestURI().startsWith("/api/auth/");
+    }
 
-        final String authHeader = request.getHeader("Authorization");
-        String email = null;
-        String token = null;
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
+            throws ServletException, IOException {
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            try {
-                email = jwtUtil.extractEmail(token);
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
-        }
+        String header = request.getHeader("Authorization");
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepo.findByEmail(email).orElse(null);
-            if (user != null) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(user, null, List.of());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+
+            String email = jwtUtil.extractEmail(token);
+            String role = jwtUtil.extractRole(token);
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(
+                                email,
+                                null,
+                                List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
 

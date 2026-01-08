@@ -13,37 +13,45 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private UserRepository repo;
+    private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder encoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
 
     public String register(RegisterRequest request) {
-        if (repo.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
         }
 
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(encoder.encode(request.getPassword())); // encode password
-        user.setRole("USER");
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        repo.save(user);
-        return "User Registered Successfully";
+        // 🔒 Role validation
+        if (!request.getRole().equals("USER") && !request.getRole().equals("SELLER")) {
+            throw new RuntimeException("Invalid role");
+        }
+
+        user.setRole(request.getRole());
+
+        userRepository.save(user);
+        return "User registered successfully";
     }
 
     public String login(LoginRequest request) {
-        User user = repo.findByEmail(request.getEmail())
+
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
         }
 
-        return jwtUtil.generateToken(user.getEmail());
+        return jwtUtil.generateToken(user.getEmail(), user.getRole());
     }
 }

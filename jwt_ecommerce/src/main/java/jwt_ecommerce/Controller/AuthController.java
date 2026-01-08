@@ -4,23 +4,23 @@ import jwt_ecommerce.DTO.LoginRequest;
 import jwt_ecommerce.DTO.RegisterRequest;
 import jwt_ecommerce.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
-@CrossOrigin(origins = "*") // allow Postman/React
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
-    private AuthService service;
+    private AuthService authService;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
-        return service.register(request);
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-        return service.login(request);
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
