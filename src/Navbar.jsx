@@ -34,13 +34,14 @@ export default function Navbar() {
 
             <li className="nav-item">
               <Link className="nav-link" to="/cart" title="Cart">
-                <i className="bi bi-cart-fill fs-5 text-primary"></i>
+                {/* <i className="bi bi-cart-fill fs-5 text-primary"></i> */}
+             My Cart
               </Link>
             </li>
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link" to="/admin/seller">Become a Seller</Link>
-            </li>
+            </li> */}
 
             <li className="nav-item">
               <Link className="nav-link" to="/login">Login</Link>

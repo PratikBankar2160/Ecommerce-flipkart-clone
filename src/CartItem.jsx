@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "./CartItem.css"
+import "./CartItem.css";
+import axiosInstance from "./axiosInstance";
 
 const CartItem = ({ item, setCart }) => {
   const userId = JSON.parse(localStorage.getItem("userId"));
@@ -12,8 +12,8 @@ const CartItem = ({ item, setCart }) => {
 
     setLoading(true);
 
-    axios
-      .put(`http://localhost:8080/cart/quantity/${itemId}`, null, {
+    axiosInstance
+      .put(`/cart/quantity/${itemId}`, null, {
         params: { change, userId },
       })
       .then((res) => setCart(res.data))
@@ -23,22 +23,28 @@ const CartItem = ({ item, setCart }) => {
 
   // Remove item
   const removeItem = (itemId) => {
-    axios
-      .delete(`http://localhost:8080/cart/remove/${itemId}`, {
+    axiosInstance
+      .delete(`/cart/remove/${itemId}`, {
         params: { userId },
       })
       .then(() =>
-        setCart((prevCart) => ({
-          ...prevCart,
-          items: prevCart.items.filter((i) => i.itemId !== itemId),
-          totalAmount: prevCart.items
-            .filter((i) => i.itemId !== itemId)
-            .reduce((sum, i) => sum + i.subTotal, 0),
-        }))
+        setCart((prevCart) => {
+          const updatedItems = prevCart.items.filter(
+            (i) => i.itemId !== itemId
+          );
+
+          return {
+            ...prevCart,
+            items: updatedItems,
+            totalAmount: updatedItems.reduce(
+              (sum, i) => sum + i.subTotal,
+              0
+            ),
+          };
+        })
       )
       .catch(() => alert("Failed to remove item"));
   };
-
 
   return (
     <div className="card mb-3 p-3 shadow-sm rounded-3">
@@ -47,14 +53,17 @@ const CartItem = ({ item, setCart }) => {
         {/* Product Info */}
         <div className="col-md-6 d-flex align-items-center gap-3">
 
-
-          {/* Product Image */}
-          <img
-            src={item.imageUrl}
-            alt={item.productName}
-            className="cart-product-img"
-          />
-
+          {/* ✅ Product Image */}
+          {item.image && (
+            <img
+              src={`http://localhost:8080${item.image}`}
+              alt={item.productName}
+              className="cart-product-img"
+              onError={(e) => {
+                e.target.src = "/no-image.png";
+              }}
+            />
+          )}
 
           <div>
             <h6 className="mb-1">{item.productName}</h6>
@@ -69,7 +78,7 @@ const CartItem = ({ item, setCart }) => {
           <div className="d-flex align-items-center justify-content-center">
             <button
               className="btn btn-outline-secondary btn-sm"
-              disabled={item.quantity === 1}
+              disabled={item.quantity === 1 || loading}
               onClick={() => updateQty(item.itemId, -1)}
             >
               <i className="bi bi-dash"></i>
@@ -79,6 +88,7 @@ const CartItem = ({ item, setCart }) => {
 
             <button
               className="btn btn-outline-secondary btn-sm"
+              disabled={loading}
               onClick={() => updateQty(item.itemId, 1)}
             >
               <i className="bi bi-plus"></i>
@@ -92,6 +102,7 @@ const CartItem = ({ item, setCart }) => {
           <button
             className="btn btn-sm btn-outline-danger"
             onClick={() => removeItem(item.itemId)}
+            disabled={loading}
           >
             <i className="bi bi-trash-fill"></i>
           </button>

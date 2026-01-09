@@ -24,35 +24,38 @@ import Login from './Login';
 
 // 🔒 Protected
 import ProtectedRoute from "./ProtectedRoute";
-// import SellerDashboard from "./pages/SellerDashboard";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const isLoggedIn = !!localStorage.getItem("token");
+
   return (
     <BrowserRouter>
-      <Navbar />
-      <CategoryNavbar onCategorySelect={setSelectedCategory} />
 
-      {/* ✅ conditional rendering */}
-      {selectedCategory && (
+      {/* ✅ Show Navbar ONLY if logged in */}
+      {isLoggedIn && <Navbar />}
+      {isLoggedIn && <CategoryNavbar onCategorySelect={setSelectedCategory} />}
+
+      {isLoggedIn && selectedCategory && (
         <BrandList categoryId={selectedCategory} />
       )}
 
       <Routes>
 
-        {/* 🌍 Public routes */}
+        {/* 🌍 PUBLIC ROUTES */}
         <Route path="/" element={<h2>Home Page</h2>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
+        {/* 🛒 USER ROUTES */}
         <Route path="/brandProducts" element={<ProductList />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/my-orders" element={<MyOrders />} />
 
-        {/* 🔒 SELLER protected route */}
+        {/* 🔒 SELLER ROUTES */}
         <Route
-          path="admin/seller"
+          path="/admin/seller"
           element={
             <ProtectedRoute role="SELLER">
               <SellerHome />
@@ -60,11 +63,32 @@ function App() {
           }
         />
 
-        {/* 🔒 ADMIN / SELLER routes (optional protect later) */}
-        <Route path="/admin/orders" element={<AdminOrders />} />
-        <Route path="/admin/addProduct" element={<AddProduct />} />
-        <Route path="/admin/seller" element={<SellerHome />} />
-        <Route path="/admin/products" element={<Products />} />
+        <Route
+          path="/admin/addProduct"
+          element={
+            <ProtectedRoute role="SELLER">
+              <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute role="SELLER">
+              <Products />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute role="SELLER">
+              <AdminOrders />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </BrowserRouter>

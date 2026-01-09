@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminOrders.css";
+import axiosInstance from "../axiosInstance";
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
     const [filterStatus, setFilterStatus] = useState("ALL");
 
     const fetchOrders = () => {
-        axios
-            .get("http://localhost:8080/orders/admin")
+        axiosInstance
+            .get("/orders/admin")
             .then(res => setOrders(res.data))
             .catch(() => alert("Failed to load orders"));
     };
@@ -18,9 +19,9 @@ const AdminOrders = () => {
     }, []);
 
     const updateStatus = (orderId, status) => {
-        axios
+        axiosInstance
             .put(
-                `http://localhost:8080/orders/${orderId}/status`,
+                `/orders/${orderId}/status`,
                 null,
                 { params: { status } }
             )

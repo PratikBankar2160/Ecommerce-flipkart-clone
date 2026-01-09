@@ -3,6 +3,7 @@ import axios from "axios";
 import CartItem from "./CartItem";
 import "./CartPage.css";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "./axiosInstance";
 
 const CartPage = () => {
   const userId = JSON.parse(localStorage.getItem("userId"));
@@ -12,9 +13,8 @@ const CartPage = () => {
   let navigate = useNavigate();
 
   const checkout = async () => {
-  await axios.post(
-    // `http://localhost:8080/orders/checkout/${userId}`
-    `http://localhost:8080/orders/checkout/${userId}/${cartId}`
+  await axiosInstance.post(
+    `/orders/checkout/${userId}/${cartId}`
   );
 
   alert("Order placed successfully");
@@ -24,8 +24,8 @@ const CartPage = () => {
 
   // Fetch cart from backend
   const fetchCart = () => {
-    axios
-      .get(`http://localhost:8080/cart/${userId}`)
+    axiosInstance
+      .get(`/cart/${userId}`)
       .then((res) => setCart(res.data))
       .catch(() => alert("Failed to load cart"));
   };

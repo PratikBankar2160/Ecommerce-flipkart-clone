@@ -39,7 +39,8 @@ const Login = () => {
 
       // 🚦 role-based redirect
       if (role === "SELLER") {
-        navigate("/seller/dashboard");
+        // navigate("/seller/dashboard");
+        navigate("/admin/seller");
       } else {
         navigate("/");
       }

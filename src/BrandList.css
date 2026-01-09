@@ -1,29 +1,30 @@
 .brand-sidebar {
-  width: 280px; /* fixed width */
-  background-color: #fff;
-  border-radius: 0 0 10px 10px; /* top square, bottom rounded */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  border-radius: 8px;
   padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  /* position: sticky; */
+  top: 80px;
+  height: fit-content;
+  width: 300px;
 }
 
-
-.brand-sidebar {
-  position: sticky;
-  top: 80px; /* height of navbar */
+.brand-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
-
-
 
 .brand-item {
+  padding: 8px 0;
   cursor: pointer;
-  padding: 8px 12px;
   color: #333;
-  border-radius: 6px;
-  transition: all 0.2s ease;
 }
 
 .brand-item:hover {
-  background-color: #f1f3f5;
   color: #0d6efd;
-  transform: translateX(4px);
+  font-weight: 500;
 }

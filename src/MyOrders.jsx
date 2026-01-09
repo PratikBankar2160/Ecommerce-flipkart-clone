@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./MyOrder.css";
+import axiosInstance from "./axiosInstance";
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -20,8 +21,8 @@ const MyOrders = () => {
     };
 
     const fetchOrders = () => {
-        axios
-            .get(`http://localhost:8080/orders/user/${userId}`)
+        axiosInstance
+            .get(`/orders/user/${userId}`)
             .then(res => setOrders(res.data))
             .catch(() => alert("Failed to load orders"));
     };
@@ -32,8 +33,8 @@ const MyOrders = () => {
 
     // ✅ FIXED cancel order
     const cancelOrder = (orderId) => {
-        axios
-            .put(`http://localhost:8080/orders/${orderId}/cancel`)
+        axiosInstance
+            .put(`/orders/${orderId}/cancel`)
             .then(() => {
                 alert("Order cancelled successfully");
                 fetchOrders();

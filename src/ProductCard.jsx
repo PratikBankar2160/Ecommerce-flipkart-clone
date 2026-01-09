@@ -1,47 +1,45 @@
 import React from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
+import axiosInstance from "./axiosInstance";
 
 const ProductCard = ({ product }) => {
-
   const navigate = useNavigate();
 
   const addToCart = () => {
-    const userId = 3;
-    localStorage.setItem("userId", JSON.stringify(userId));
+    const userId = JSON.parse(localStorage.getItem("userId")) || 3;
 
-    axios.post("http://localhost:8080/cart/add", {
-      userId,
-      productId: product.id,
-      quantity: 1
-    })
+    axiosInstance
+      .post("/cart/add", {
+        userId,
+        productId: product.id,
+        quantity: 1,
+      })
       .then(() => {
-        alert("Product added to cart");
         navigate("/cart");
       })
-      .catch(() => {
-        alert("Failed to add product");
-      });
+      .catch(() => alert("Failed to add product"));
   };
 
-  const discount = product.oldPrice
-    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : 0;
+  const discount =
+    product.oldPrice && product.oldPrice > product.price
+      ? Math.round(
+          ((product.oldPrice - product.price) / product.oldPrice) * 100
+        )
+      : 0;
 
   return (
     <div className="product-card d-flex p-3 mb-3">
 
       {/* Product Image */}
-      {product.imageUrl && (
-        <div className="product-img">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="product-img-hover"
-          />
-        </div>
-      )}
+      <div className="product-img">
+  <img
+    src={`http://localhost:8080${product.image}`}
+    alt={product.name}
+    className="product-img-hover"
+  />
+</div>
+
 
       {/* Product Details */}
       <div className="product-details flex-grow-1 ms-4">
@@ -56,10 +54,7 @@ const ProductCard = ({ product }) => {
           <li>{product.description}</li>
         </ul>
 
-        <button
-          className="btn btn-primary mt-auto"
-          onClick={addToCart}
-        >
+        <button className="btn btn-primary mt-auto" onClick={addToCart}>
           Add to Cart
         </button>
       </div>
@@ -73,16 +68,17 @@ const ProductCard = ({ product }) => {
             <span className="text-muted text-decoration-line-through">
               ₹{product.oldPrice}
             </span>
-            <span className="text-success ms-2">
-              {discount}% off
-            </span>
+            {discount > 0 && (
+              <span className="text-success ms-2">
+                {discount}% off
+              </span>
+            )}
           </div>
         )}
 
         <p className="text-danger small mt-1">
           Only {product.quantity} left
         </p>
-        <p className="text-success small">Bank Offer</p>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AddProduct.css";
+import axiosInstance from "../axiosInstance";
 
 const AddProduct = () => {
     const [categories, setCategories] = useState([]);
@@ -19,7 +20,7 @@ const AddProduct = () => {
 
     // 🔄 Load categories
     useEffect(() => {
-        axios.get("http://localhost:8080/categories")
+        axiosInstance.get("/categories")
             .then(res => setCategories(res.data))
             .catch(() => alert("Failed to load categories"));
     }, []);
@@ -55,7 +56,7 @@ const AddProduct = () => {
         formData.append("categoryId", product.categoryId);
         formData.append("image", image);
 
-        axios.post("http://localhost:8080/products", formData)
+        axiosInstance.post("/products", formData)
             .then(() => {
                 alert("Product added successfully");
 
