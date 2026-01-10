@@ -34,10 +34,11 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
       <div className="product-img">
   <img
-    src={`http://localhost:8080${product.image}`}
-    alt={product.name}
-    className="product-img-hover"
-  />
+  src="/products/biba.webp"
+  alt={product.name}
+  className="product-img-hover"
+/>
+
 </div>
 
 
