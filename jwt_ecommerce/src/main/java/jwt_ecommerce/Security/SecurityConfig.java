@@ -42,6 +42,10 @@ public class SecurityConfig {
 
                         // ✅ allow OPTIONS (preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/products/**").hasAnyRole("USER", "SELLER")
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+
+
 
                         // 🔒 protected routes
                         .requestMatchers("/admin/**").hasRole("SELLER")
