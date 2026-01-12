@@ -2,15 +2,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState } from 'react';
 
 import Navbar from './Navbar';
 import CategoryNavbar from './CategoryNavbar';
-import BrandList from './BrandList';
 import ProductList from './ProductList';
 import CartPage from './CartPage';
 import MyOrders from './MyOrders';
+import Home from './Home';
 
 // Admin / Seller
 import AdminOrders from './Admin/AdminOrders';
@@ -26,34 +26,50 @@ import Login from './Login';
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
+  return (
+    <BrowserRouter>
+      <MainLayout />
+    </BrowserRouter>
+  );
+}
+
+function MainLayout() {
+  const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const isLoggedIn = !!localStorage.getItem("token");
 
+  // ❌ Pages where navbar should NOT appear
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname.startsWith("/admin");
+
   return (
-    <BrowserRouter>
-
-      {/* ✅ Show Navbar ONLY if logged in */}
-      {isLoggedIn && <Navbar />}
-      {isLoggedIn && <CategoryNavbar onCategorySelect={setSelectedCategory} />}
-
-      {isLoggedIn && selectedCategory && (
-        <BrandList categoryId={selectedCategory} />
+    <>
+      {/* ✅ NAVBARS */}
+      {isLoggedIn && !hideNavbar && <Navbar />}
+      {isLoggedIn && !hideNavbar && (
+        <CategoryNavbar onCategorySelect={setSelectedCategory} />
       )}
 
       <Routes>
-
-        {/* 🌍 PUBLIC ROUTES */}
-        <Route path="/" element={<h2>Home Page</h2>} />
+        {/* 🌍 PUBLIC */}
+        <Route
+          path="/"
+          element={<Home selectedCategory={selectedCategory} />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* 🛒 USER ROUTES */}
+        {/* 🛒 PRODUCTS */}
+        <Route path="/category/:categoryId" element={<ProductList />} />
         <Route path="/brandProducts" element={<ProductList />} />
+
         <Route path="/cart" element={<CartPage />} />
         <Route path="/my-orders" element={<MyOrders />} />
 
-        {/* 🔒 SELLER ROUTES */}
+        {/* 🔒 SELLER */}
         <Route
           path="/admin/seller"
           element={
@@ -89,9 +105,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

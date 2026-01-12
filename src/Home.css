@@ -1,0 +1,179 @@
+.home-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.brand-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FULL WIDTH PAGE */
+.home-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f1f3f6;
+  padding: 24px 32px;   /* space from screen edges */
+  box-sizing: border-box;
+}
+
+/* Title */
+.home-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* FULL WIDTH GRID */
+.category-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 per row */
+  gap: 24px;
+}
+
+/* CATEGORY CARD */
+.category-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  min-height: 160px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+}
+
+/* TEXT */
+.category-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.category-card p {
+  font-size: 14px;
+  color: #616161;
+  line-height: 1.5;
+}
+
+/* LINK */
+.view-btn {
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2874f0;
+}
+
+@media (max-width: 1200px) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .home-page {
+    padding: 16px;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.product-mini {
+  text-align: center;
+}
+
+.product-mini img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.product-mini span {
+  font-size: 12px;
+}
+
+/* ----------------------------------------------------------- */
+
+
+.category-desc {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.product-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.product-mini {
+  text-align: center;
+}
+
+.product-mini img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.product-name {
+  display: block;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.product-price {
+  font-size: 12px;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.view-btn {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #1976d2;
+}
+
+

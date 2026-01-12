@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const addToCart = () => {
-    const userId = JSON.parse(localStorage.getItem("userId")) || 3;
+    const userId = JSON.parse(localStorage.getItem("userId"));
 
     axiosInstance
       .post("/cart/add", {
@@ -24,8 +24,8 @@ const ProductCard = ({ product }) => {
   const discount =
     product.oldPrice && product.oldPrice > product.price
       ? Math.round(
-          ((product.oldPrice - product.price) / product.oldPrice) * 100
-        )
+        ((product.oldPrice - product.price) / product.oldPrice) * 100
+      )
       : 0;
 
   return (
@@ -33,13 +33,13 @@ const ProductCard = ({ product }) => {
 
       {/* Product Image */}
       <div className="product-img">
-  <img
-  src="/products/biba.webp"
-  alt={product.name}
-  className="product-img-hover"
-/>
+        <img
+          src="/products/biba.webp"
+          alt={product.name}
+          className="product-img-hover"
+        />
 
-</div>
+      </div>
 
 
       {/* Product Details */}

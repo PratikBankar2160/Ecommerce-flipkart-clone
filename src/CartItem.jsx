@@ -55,14 +55,12 @@ const CartItem = ({ item, setCart }) => {
 
           {/* ✅ Product Image */}
           {item.image && (
-            <img
-              src={`http://localhost:8080${item.image}`}
-              alt={item.productName}
-              className="cart-product-img"
-              onError={(e) => {
-                e.target.src = "/no-image.png";
-              }}
-            />
+        <img
+  src={product.imageUrl || "/products/biba.webp"}
+  alt={product.name}
+  className="product-img-hover"
+/>
+
           )}
 
           <div>
