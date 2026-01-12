@@ -1,5 +1,6 @@
 package jwt_ecommerce.Controller;
 
+import jwt_ecommerce.DTO.CategoryHomeDTO;
 import jwt_ecommerce.Entity.Category;
 import jwt_ecommerce.Service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,10 @@ public class CategoryController {
         }
 
         return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/home")
+    public List<CategoryHomeDTO> getCategoriesForHome() {
+        return service.getCategoriesForHome();
     }
 }
