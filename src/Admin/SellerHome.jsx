@@ -23,7 +23,7 @@ const SellerHome = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/admin/orders">Show Orders</Link>
                         </li>
-                        
+
                         {/* <li>Grow</li>
                         <li>Learn</li>
                         <li>Shopsy</li> */}
@@ -31,8 +31,9 @@ const SellerHome = () => {
                 </div>
 
                 <div className="nav-right">
-                    <span className="login">Login</span>
-                    <button className="start-selling">Start Selling</button>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/login">Logout</Link>
+                    </li>
                 </div>
             </header>
 
